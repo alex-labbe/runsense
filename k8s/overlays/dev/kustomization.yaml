@@ -5,6 +5,7 @@ namespace: dev
 
 resources:
   - ../../base/postgres
+  - ../../base/mosquitto
   - ./secret.yaml
   - ./namespace.yaml
 

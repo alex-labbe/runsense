@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mosquitto
+  labels:
+    app: mosquitto
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mosquitto
+  template:
+    metadata:
+      labels:
+        app: mosquitto
+    spec:
+      containers:
+        - name: mosquitto
+          image: eclipse-mosquitto:2.0
+          ports:
+            - containerPort: 1883
+          volumeMounts:
+            - name: cfg
+              mountPath: /mosquitto/config
+              readOnly: true
+            - name: passwd
+              mountPath: /mosquitto/secret
+              readOnly: true
+            - name: data
+              mountPath: /mosquitto/data
+          readinessProbe:
+            tcpSocket:
+              port: 1883
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 1883
+            initialDelaySeconds: 15
+            periodSeconds: 10
+      volumes:
+      - name: cfg
+        configMap:
+          name: mosquitto-config
+          items:
+            - key: mosquitto.conf
+              path: mosquitto.conf
+      - name: passwd
+        secret:
+          secretName: mosquitto-passwd
+          items:
+            - key: passwd
+              path: passwd
+      - name: data
+        persistentVolumeClaim:
+          claimName: mosquitto-data
