@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingestor-config
+data:
+  MQTT_HOST: "mosquitto"
+  MQTT_PORT: "1883"
+  MQTT_TOPICS: "int/+/accel"
+  PG_HOST: "postgres"
+  PG_PORT: "5432"
+  PG_DB: "runsense"
+  PG_USER_ENV: "POSTGRES_USER"
+  PG_PASSWORD_ENV: "POSTGRES_PASSWORD"
+  RAW_TABLE: "raw_windows"
+  FEAT_TABLE: "features"
+  LOG_LEVEL: "info"
