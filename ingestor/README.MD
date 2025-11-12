@@ -1,3 +1,4 @@
+```json
 {
   "device_id": "stm32-imu-01",
   "seq": 42,
@@ -11,3 +12,4 @@
   },
   "label": "walk"
 }
+```
