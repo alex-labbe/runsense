@@ -10,6 +10,11 @@ CREATE TABLE IF NOT EXISTS raw_windows (
     created_at timestamptz NOT NULL DEFAULT now()
 );
 
+-- Idempotency: prevent duplicate windows per device
+CREATE UNIQUE INDEX IF NOT EXISTS raw_windows_device_seq_idx
+ON raw_windows(device_id, seq);
+
+
 CREATE TABLE IF NOT EXISTS features(
     id bigserial PRIMARY KEY,
     raw_id bigint NOT NULL REFERENCES raw_windows(id) ON DELETE CASCADE,
