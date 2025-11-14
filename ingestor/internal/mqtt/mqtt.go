@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/alex-labbe/runsense/ingestor/internal/config"
+	"github.com/alex-labbe/runsense/ingestor/internal/metrics"
 	pmqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
@@ -56,7 +57,7 @@ func New(cfg config.Config, handler Handler, onMessage func([]byte)) *Client {
 			return
 		}
 
-		//TODO: increment the reconnects metric
+		metrics.IngestorMqttReconnectsTotal.Inc()
 
 	}
 
