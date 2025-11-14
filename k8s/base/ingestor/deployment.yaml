@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: ingestor
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: ingestor
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: ingestor
-          image: yourrepo/ingestor:dev
+          image: alexlabbe/ingestor:dev
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
