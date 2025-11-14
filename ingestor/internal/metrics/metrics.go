@@ -45,7 +45,7 @@ var (
 	)
 )
 
-func InitMetricsServer(addr string) {
+func InitMetricsServer() {
 	prometheus.MustRegister(
 		IngestorMessagesTotal,
 		IngestorDBInsertsTotal,

@@ -23,7 +23,7 @@ type Client struct {
 
 var firstConnect atomic.Bool
 
-func New(cfg config.Config, handler Handler, onMessage func([]byte)) *Client {
+func New(cfg config.Config, handler Handler) *Client {
 	c := &Client{
 		cfg:     cfg,
 		handler: handler,
@@ -72,7 +72,7 @@ func New(cfg config.Config, handler Handler, onMessage func([]byte)) *Client {
 	return c
 }
 
-// called in main ofter db.New and config are loaded
+// called in main after db.New and config are loaded
 func (c *Client) Start() error {
 	token := c.client.Connect()
 	if !token.WaitTimeout(time.Duration(10) * time.Second) {
