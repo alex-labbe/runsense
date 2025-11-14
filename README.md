@@ -10,3 +10,4 @@ Trying to train a model to classify motion type (stable, shaking, walking, runni
 - **Build / deps**: Go modules (`ingestor/go.mod`).
 - **Configs & secrets**: example secrets in `k8s/base/*/secret.example.yaml` and `ops/secrets/passwd`.
 
+ 
