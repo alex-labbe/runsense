@@ -63,7 +63,6 @@ func New(ctx context.Context, cfg config.Config) (*Store, error) {
 	if err != nil {
 		return nil, fmt.Errorf("create pgx pool: %w", err)
 	}
-	defer pool.Close()
 
 	// immediately ping
 	if err := pool.Ping(ctx); err != nil {
@@ -71,7 +70,7 @@ func New(ctx context.Context, cfg config.Config) (*Store, error) {
 		return nil, fmt.Errorf("ping postgres: %w", err)
 	}
 
-	// on success
+	// on success - keep pool open; caller must call Close()
 	return &Store{pool: pool, rawTable: cfg.RawTable, featTable: cfg.FeatTable}, nil
 }
 
