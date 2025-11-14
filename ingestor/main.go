@@ -13,18 +13,15 @@ import (
 
 	"github.com/alex-labbe/runsense/ingestor/internal/config"
 	"github.com/alex-labbe/runsense/ingestor/internal/db"
+	"github.com/alex-labbe/runsense/ingestor/internal/ingest"
 	"github.com/alex-labbe/runsense/ingestor/internal/metrics"
 	"github.com/alex-labbe/runsense/ingestor/internal/mqtt"
 )
 
-func parseWindow(payload []byte) (db.RawWindow, error) {
-
-	return db.RawWindow{}, errors.New("not implemented")
-}
-
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
+
 	// Load configuration from environment variables
 	cfg := config.Load()
 
@@ -48,7 +45,7 @@ func main() {
 		defer cancel()
 
 		// Parse and validate the incoming message
-		w, err := parseWindow(payload)
+		w, err := ingest.ParseWindow(payload)
 		if err != nil {
 			metrics.IngestorParseErrorsTotal.Inc()
 			log.Printf("failed to parse message on topic %s: %v", topic, err)
@@ -112,7 +109,7 @@ func main() {
 
 	// start HTTP server in background
 	go func() {
-		log.Printf("listening on port: %d", srv.Addr)
+		log.Printf("listening on port: %s", srv.Addr)
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Printf("http server error: %v", err)
 			cancel()
@@ -124,4 +121,21 @@ func main() {
 	sigCh := make(chan os.Signal, 1)
 	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
 
+	select {
+	case <-sigCh:
+		log.Printf("shutdown signal recieved")
+	case <-ctx.Done():
+		log.Printf("context conceled, shutting down")
+	}
+
+	// stop accepting new HTTP requests and give some time
+	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer shutdownCancel()
+	if err := srv.Shutdown(shutdownCtx); err != nil {
+		log.Printf("http shutdown error: %v", err)
+	}
+
+	mq.Stop()
+
+	log.Printf("ingestor shutdown cleanly")
 }
