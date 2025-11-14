@@ -24,8 +24,10 @@ func main() {
 
 	// Load configuration from environment variables
 	cfg := config.Load()
+	log.Printf("MQTT config: host=%s port=%d topics=%s client_id=%s",
+		cfg.MQTTHost, cfg.MQTTPort, cfg.MQTTTopics, cfg.MQTTClientID)
 
-	log.Printf("starting ingestor service on port %d", cfg.MQTTPort)
+	log.Printf("starting ingestor service on port %d", cfg.HTTPPort)
 
 	// Initialize metrics server
 	metrics.InitMetricsServer()

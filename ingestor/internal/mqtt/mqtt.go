@@ -30,7 +30,11 @@ func New(cfg config.Config, handler Handler) *Client {
 	}
 
 	opts := pmqtt.NewClientOptions()
-	opts.AddBroker(fmt.Sprintf("tls://%s:%d", cfg.MQTTHost, cfg.MQTTPort))
+
+	brokerURL := fmt.Sprintf("tcp://%s:%d", cfg.MQTTHost, cfg.MQTTPort)
+	log.Printf("Using MQTT broker URL: %s", brokerURL)
+	opts.AddBroker(brokerURL)
+
 	opts.SetClientID(cfg.MQTTClientID)
 	opts.SetUsername(cfg.MQTTUsername)
 	opts.SetPassword(cfg.MQTTPassword)

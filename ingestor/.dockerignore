@@ -1,0 +1,14 @@
+# Build context ignores for Docker
+.git
+.vscode
+*.md
+*.log
+bin
+vendor
+node_modules
+k8s
+ops
+scripts
+README.MD
+**/*.test
+**/*.out

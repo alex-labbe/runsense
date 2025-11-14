@@ -47,3 +47,20 @@ example MQTT payload representing a window of sensor data:
 }
 ```
 
+## Docker
+
+Build and run a local image for testing:
+
+```bash
+# from the `ingestor/` directory
+docker build -t runsense-ingestor:local .
+
+# run with env overrides (expose HTTP port for /health and /metrics)
+docker run --rm -e MQTT_HOST=host.docker.internal -e MQTT_PORT=1883 -e PG_HOST=host.docker.internal -e PG_PORT=5432 -p 8080:8080 runsense-ingestor:local
+```
+
+Notes:
+- The service reads configuration from environment variables (see `internal/config`).
+- For local testing you can run the provided `scripts/run-local.sh` which starts Mosquitto and Postgres via Docker and then runs the binary locally.
+
+
