@@ -29,7 +29,7 @@ This service ingests windowed sensor data from MQTT, stores it in Postgres, and 
 - Registers the `/metrics` HTTP handler for Prometheus scraping.
 
 ## Example Payload
-Below is an example MQTT payload representing a window of sensor data:
+example MQTT payload representing a window of sensor data:
 
 ```json
 {
