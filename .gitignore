@@ -2,3 +2,4 @@ k8s/**/secret*.yaml
 k8s/**/*secret.yaml
 ops/secrets/*
 ingestor/cmd
+ingestor/ingestor*

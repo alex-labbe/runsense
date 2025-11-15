@@ -1,6 +1,6 @@
 {
   "device_id": "stm32-01",
-  "seq": 1,
+  "seq": 4,
   "ts_start": "2025-11-13T12:00:00Z",
   "fs_hz": 3.0,
   "duration_s": 1.0,
