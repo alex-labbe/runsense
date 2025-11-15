@@ -5,7 +5,7 @@ metadata:
 data:
   MQTT_HOST: "mosquitto"
   MQTT_PORT: "1883"
-  MQTT_TOPICS: "int/+/accel"
+  MQTT_TOPICS: "iot/+/accel"
   MQTT_CLIENT_ID: "ingestor-$(HOSTNAME)"
   MQTT_KEEPALIVE: "30"
   MQTT_QOS: "1"
